@@ -1,4 +1,5 @@
 #include "MemoryAllocator.h"
+#include "MMU.h"
 
 #include <cstring>
 #include <sstream>

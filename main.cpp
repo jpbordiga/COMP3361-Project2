@@ -7,10 +7,11 @@
 
 #include "Process.h"
 #include "MemoryAllocator.h"
+#include "MMU.h"
 
 #include <cstdlib>
 #include <iostream>
-#include "MMU.h"
+
 
 using namespace std;
 using namespace mem;
@@ -25,7 +26,7 @@ int main(int argc, char** argv) {
     
     mem::MMU memory(0x40); 
     
-    
+    std::cout << "test build\n";
     
     return 0;
 }
