@@ -9,6 +9,7 @@
 #define PAGETABLEMANAGER_HPP
 
 #include "MMU.h"
+#include "MemoryAllocator.h"
 #include <string>
 #include <vector>
 
@@ -22,10 +23,10 @@ public:
     * 
     * @param TBD
     */
-    PageTableManager(); // params TBD
+    PageTableManager(mem::MMU &memory, MemoryAllocator &mA);
 
     /**
-    * Destructor - close trace file, clean up processing
+    * Destructor - delete PageTableManager
     */
     virtual ~PageTableManager(void);
 
@@ -35,30 +36,12 @@ public:
     PageTableManager operator=(const PageTableManager &other) = delete;
     PageTableManager operator=(PageTableManager &&other) = delete;
     
-//    void map(uint32_t pages, mem::Addr vaddr);
-//    
-//    void diff(mem::Addr vaddr); //
-//    
-//    void store(mem::Addr vaddr);
-//    
-//    void replicate(uint8_t value, uint32_t count, mem::Addr vaddr);
-//    
-//    void duplicate(uint32_t count, mem::Addr source, mem::Addr dest);
-//    
-//    void print(uint32_t count, mem::Addr vaddr);
-  
     
     void map(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
     
-//    void diff(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs);
-//    
-//    void store(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs);
-//    
-//    void replicate(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs);
-//    
-//    void duplicate(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs);
-//    
-//    void print(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs);
+    void CmdPerm(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
+    
+    mem::Addr create_process_page_table(mem::MMU &memory, mem::Addr vaddr);
     
 private:
     

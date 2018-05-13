@@ -17,26 +17,26 @@ using std::istringstream;
 using std::string;
 using std::vector;
 
-Process::Process(string file_name_) : file_name(file_name_), line_number(0) {
+Process::Process(mem::MMU &memory, PageTableManager &pTM, std::string file_name_) {
     
     // Open the trace file.  Abort program if can't open.
-//    trace.open(file_name, std::ios_base::in);
-//    
-//    if (!trace.is_open()) {
-//        cerr << "ERROR: failed to open trace file: " << file_name << "\n";
-//        exit(2);
-//    }
+    file_name = file_name_;
+    trace.open(file_name, std::ios_base::in);
     
+    if (!trace.is_open()) {
+        cerr << "ERROR: failed to open trace file: " << file_name << "\n";
+        exit(2);
+    }
     
-    
+    //Run(memory, pTM);
     
 }
 
-Process::~Process() {
+Process::~Process() { //
     trace.close();
 }
 
-void Process::Run(void) {
+void Process::Run(mem::MMU &memory, PageTableManager &pTM) {
   
     // Read and process commands
     string line;                // text line read
@@ -46,19 +46,22 @@ void Process::Run(void) {
     // Select the command to execute
     while (ParseCommand(line, cmd, cmdArgs)) {
         
-        if (cmd == "memsize" ) {
-          CmdMemSize(line, cmd, cmdArgs);    // allocate memory
+        if (cmd == "map" ) {
+          pTM.map(line, cmd, cmdArgs, memory);    // map to a page
         } else if (cmd == "diff") {
-          CmdDiff(line, cmd, cmdArgs);  // get and compare multiple bytes
+          CmdDiff(line, cmd, cmdArgs, memory);  // get and compare multiple bytes
         } else if (cmd == "store") {
-          CmdStore(line, cmd, cmdArgs);      // put bytes
+          CmdStore(line, cmd, cmdArgs, memory);      // put bytes
         } else if (cmd == "replicate") {
-          CmdRepl(line, cmd, cmdArgs);     // fill bytes with value
+          CmdRepl(line, cmd, cmdArgs, memory);     // fill bytes with value
         } else if (cmd == "duplicate") {
-          CmdDupl(line, cmd, cmdArgs);     // copy bytes to dest from source
+          CmdDupl(line, cmd, cmdArgs, memory);     // copy bytes to dest from source
         } else if (cmd == "print") {
-          CmdPrint(line, cmd, cmdArgs);     // dump byte values to output
-        } else if (cmd != "#") {
+          CmdPrint(line, cmd, cmdArgs, memory);     // dump byte values to output
+        } else if (cmd == "permission") {
+          //CmdPerm(line, cmd, cmdArgs, memory);     // change read/write permission
+            pTM.CmdPerm(line, cmd, cmdArgs, memory);
+        }else if (cmd != "#") {
           cerr << "ERROR: invalid command\n";
           exit(2);
         }
@@ -67,9 +70,7 @@ void Process::Run(void) {
     
 }
 
-bool Process::ParseCommand(
-    
-    string &line, string &cmd, vector<uint32_t> &cmdArgs) {
+bool Process::ParseCommand(string &line, string &cmd, vector<uint32_t> &cmdArgs) {
     cmdArgs.clear();
     line.clear();
   
@@ -111,12 +112,12 @@ bool Process::ParseCommand(
     }
 }
 
-void Process::CmdMemSize(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
-    // Allocate the specified memory size
-    //memory = std::make_unique<mem::MMU>((cmdArgs.at(0) + kPageSize - 1) / kPageSize);
-}
+//void Process::CmdMemSize(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
+//    // Allocate the specified memory size
+//    //memory = std::make_unique<mem::MMU>((cmdArgs.at(0) + kPageSize - 1) / kPageSize);
+//}
 
-void Process::CmdDiff(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
+void Process::CmdDiff(const string &line, const string &cmd, vector<uint32_t> &cmdArgs, mem::MMU &memory) {
   
     uint32_t addr = cmdArgs.back();
 
@@ -126,7 +127,7 @@ void Process::CmdDiff(const string &line, const string &cmd, vector<uint32_t> &c
     for (int i = 0; i < count; ++i) {
         
         uint8_t b;
-        memory->get_byte(&b, addr);
+        memory.get_byte(&b, addr);
         if(b != cmdArgs.at(i)) {
           cout << "diff error at address " << std::hex << addr << ", expected " << static_cast<uint32_t>(cmdArgs.at(i)) << ", actual is " << static_cast<uint32_t>(b) << "\n";
         }
@@ -136,7 +137,7 @@ void Process::CmdDiff(const string &line, const string &cmd, vector<uint32_t> &c
     }
 }
 
-void Process::CmdStore(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
+void Process::CmdStore(const string &line, const string &cmd, vector<uint32_t> &cmdArgs, mem::MMU &memory) {
   
     // Store multiple bytes starting at specified address
     Addr addr = cmdArgs.back();
@@ -149,11 +150,11 @@ void Process::CmdStore(const string &line, const string &cmd, vector<uint32_t> &
     }
 
     // Write to MMU
-    memory->put_bytes(addr, cmdArgs.size(), buffer);
+    memory.put_bytes(addr, cmdArgs.size(), buffer);
     
 }
 
-void Process::CmdDupl(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
+void Process::CmdDupl(const string &line, const string &cmd, vector<uint32_t> &cmdArgs, mem::MMU &memory) {
   
     // Duplicate specified number of bytes to destination from source
     Addr dst = cmdArgs.at(2);
@@ -162,13 +163,13 @@ void Process::CmdDupl(const string &line, const string &cmd, vector<uint32_t> &c
     uint8_t b;
     
     while (count-- > 0) {
-      memory->get_byte(&b, src++);
-      memory->put_byte(dst++, &b);
+      memory.get_byte(&b, src++);
+      memory.put_byte(dst++, &b);
     }
     
 }
 
-void Process::CmdRepl(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
+void Process::CmdRepl(const string &line, const string &cmd, vector<uint32_t> &cmdArgs, mem::MMU &memory) {
   
     // Replicate specified value in destination range
     uint8_t value = cmdArgs.at(0);
@@ -176,12 +177,12 @@ void Process::CmdRepl(const string &line, const string &cmd, vector<uint32_t> &c
     uint32_t addr = cmdArgs.at(2);
     
     for (int i = 0; i < count; ++i) {
-      memory->put_byte(addr++, &value);
+      memory.put_byte(addr++, &value);
     }
     
 }
 
-void Process::CmdPrint(const string &line, const string &cmd, vector<uint32_t> &cmdArgs) {
+void Process::CmdPrint(const string &line, const string &cmd, vector<uint32_t> &cmdArgs, mem::MMU &memory) {
   
     uint32_t addr = cmdArgs.at(1);
     uint32_t count = cmdArgs.at(0);
@@ -198,7 +199,7 @@ void Process::CmdPrint(const string &line, const string &cmd, vector<uint32_t> &
           cout << "\n";
         }
         
-        memory->get_byte(&b, addr++);
+        memory.get_byte(&b, addr++);
         cout << " " << std::setfill('0') << std::setw(2) << static_cast<uint32_t> (b);
         
     }

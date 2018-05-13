@@ -15,6 +15,7 @@
 #define PROCESS_H
 
 #include "MMU.h"
+#include "PageTableManager.hpp"
 
 #include <fstream>
 #include <memory>
@@ -28,7 +29,8 @@ public:
    * 
    * @param file_name_ source of trace commands
    */
-  Process(std::string file_name_);
+  //Process(std::string file_name_);
+  Process(mem::MMU &memory, PageTableManager &pTM, std::string file_name_);
   
   /**
    * Destructor - close trace file, clean up processing
@@ -45,7 +47,7 @@ public:
    * Run - read and process commands from trace file
    * 
    */
-  void Run(void);
+  void Run(mem::MMU &memory, PageTableManager &pTM);
   
 private:
   // Trace file
@@ -57,7 +59,7 @@ private:
   
   // get rid of this?
   
-  std::unique_ptr<mem::MMU> memory;
+  //std::unique_ptr<mem::MMU> memory;
   
   /**
    * ParseCommand - parse a trace file command.
@@ -68,8 +70,7 @@ private:
    * @param cmdArgs returns a vector of argument bytes
    * @return true if command parsed, false if end of file
    */
-  bool ParseCommand(
-      std::string &line, std::string &cmd, std::vector<uint32_t> &cmdArgs);
+  bool ParseCommand(std::string &line, std::string &cmd, std::vector<uint32_t> &cmdArgs);
   
   /**
    * Command executors. Arguments are the same for each command.
@@ -78,24 +79,19 @@ private:
    * @param cmd command, converted to all lower case
    * @param cmdArgs arguments to command
    */
-  void CmdMemSize(const std::string &line, 
-                  const std::string &cmd, 
-                  std::vector<uint32_t> &cmdArgs);
-  void CmdDiff(const std::string &line, 
-               const std::string &cmd, 
-               std::vector<uint32_t> &cmdArgs);
-  void CmdStore(const std::string &line, 
-                const std::string &cmd, 
-                std::vector<uint32_t> &cmdArgs);
-  void CmdRepl(const std::string &line, 
-               const std::string &cmd, 
-               std::vector<uint32_t> &cmdArgs);
-  void CmdDupl(const std::string &line, 
-               const std::string &cmd, 
-               std::vector<uint32_t> &cmdArgs);
-  void CmdPrint(const std::string &line, 
-                const std::string &cmd, 
-                std::vector<uint32_t> &cmdArgs);
+  //void CmdMemSize(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs);
+  
+  void CmdDiff(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
+  
+  void CmdStore(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
+  
+  void CmdRepl(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
+  
+  void CmdDupl(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
+  
+  void CmdPerm(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
+  
+void CmdPrint(const std::string &line, const std::string &cmd, std::vector<uint32_t> &cmdArgs, mem::MMU &memory);
 };
 
 #endif /* PROCESS_H */

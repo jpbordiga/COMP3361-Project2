@@ -8,6 +8,7 @@
 #ifndef MEMORYALLOCATOR_H
 #define MEMORYALLOCATOR_H
 
+#include "MMU.h"
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -22,7 +23,7 @@ public:
    * 
    * @param page_frame_count
    */
-  MemoryAllocator(uint32_t page_frame_count);
+  MemoryAllocator(uint32_t page_frame_count, mem::MMU &memory);
   
   virtual ~MemoryAllocator() {}  // empty destructor
   
@@ -62,22 +63,22 @@ public:
    */
   std::string FreeListToString(void) const;
   
-  static const uint32_t kPageSize = 0x10000;
+  //static const uint32_t kPageSize = 0x10000;
 private:
   // Vector to hold memory to be allocated
-  std::vector<uint8_t> memory;
+  //std::vector<uint8_t> memory;
   
   // Address of number of first free page frame
-  static const size_t kFreeListHead = 0;
-  
-  // Total number of page frames
-  static const size_t kPageFramesTotal = kFreeListHead + sizeof(uint32_t);
-  
-  // Current number of free page frames
-  static const size_t kPageFramesFree = kPageFramesTotal + sizeof(uint32_t);
-  
-  // End of list marker
-  static const uint32_t kEndList = 0xFFFFFFFF;
+//  static const size_t kFreeListHead = 0;
+//  
+//  // Total number of page frames
+//  static const size_t kPageFramesTotal = kFreeListHead + sizeof(uint32_t);
+//  
+//  // Current number of free page frames
+//  static const size_t kPageFramesFree = kPageFramesTotal + sizeof(uint32_t);
+//  
+//  // End of list marker
+//  static const uint32_t kEndList = 0xFFFFFFFF;
   
   // Private getters and setters
   uint32_t get_free_list_head(void) const;
