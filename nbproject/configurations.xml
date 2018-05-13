@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>Exceptions.h</itemPath>
+      <itemPath>MMU.h</itemPath>
+      <itemPath>MemoryAllocator.h</itemPath>
+      <itemPath>MemoryDefs.h</itemPath>
+      <itemPath>PMCB.h</itemPath>
+      <itemPath>PageTable.h</itemPath>
+      <itemPath>PageTableManager.hpp</itemPath>
+      <itemPath>PhysicalMemory.h</itemPath>
+      <itemPath>Process.h</itemPath>
+      <itemPath>TLB.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>Exceptions.cpp</itemPath>
+      <itemPath>MMU.cpp</itemPath>
+      <itemPath>MemoryAllocator.cpp</itemPath>
+      <itemPath>PageTableManager.cpp</itemPath>
+      <itemPath>PhysicalMemory.cpp</itemPath>
+      <itemPath>Process.cpp</itemPath>
+      <itemPath>TLB.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <itemPath>Makefile</itemPath>
+    <itemPath>testBranch2</itemPath>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <standard>11</standard>
+        </ccTool>
+      </compileType>
+      <item path="Exceptions.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Exceptions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MMU.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MMU.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Makefile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MemoryAllocator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MemoryAllocator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MemoryDefs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PMCB.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PageTable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PageTableManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="PageTableManager.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PhysicalMemory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="PhysicalMemory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Process.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Process.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TLB.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TLB.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="testBranch2" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="Exceptions.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Exceptions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MMU.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MMU.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Makefile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MemoryAllocator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MemoryAllocator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MemoryDefs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PMCB.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PageTable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PageTableManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="PageTableManager.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PhysicalMemory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="PhysicalMemory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Process.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Process.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TLB.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TLB.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="testBranch2" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
